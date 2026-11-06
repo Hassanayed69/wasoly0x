@@ -3,3 +3,8 @@ dist
 .git
 *.swp
 *.log
+
+# Never bake local secrets into the image
+.env
+.env.*
+!.env.example

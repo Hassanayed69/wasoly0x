@@ -67,6 +67,7 @@ app.use("/api/trpc/*", bodyLimit({ maxSize: 50 * 1024 * 1024 }));
 app.get(Paths.oauthCallback, createOAuthCallbackHandler());
 app.get("/api/auth/google", createGoogleAuthStartHandler());
 app.get("/api/auth/google/callback", createGoogleCallbackHandler());
+app.get("/api/health", (c) => c.json({ ok: true, uptime: process.uptime() }));
 app.use("/api/trpc/*", async (c) => {
   return fetchRequestHandler({
     endpoint: "/api/trpc",
@@ -104,7 +105,13 @@ app.onError((err, c) => {
 
 export default app;
 
-if (env.isProduction) {
+// Serve the built app whenever this bundle is executed directly (node dist/boot.js),
+// even if the host forgot to set NODE_ENV=production. In dev the Vite plugin imports
+// this module from a different entry point, so it must not bind a port there.
+const entry = (process.argv[1] ?? "").replace(/\\/g, "/");
+const runningBuiltServer = entry.endsWith("/dist/boot.js");
+
+if (env.isProduction || runningBuiltServer) {
   const { serve } = await import("@hono/node-server");
   const { serveStaticFiles } = await import("./lib/vite");
   serveStaticFiles(app);

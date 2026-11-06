@@ -8,14 +8,20 @@ function required(name: string): string {
   return value ?? "";
 }
 
+function optional(name: string): string {
+  return process.env[name] ?? "";
+}
+
 export const env = {
-  appId: required("APP_ID"),
+  // Kimi OAuth is kept for compatibility but is not used by the app anymore.
+  // Only configure these if you actually enable the Kimi routes.
+  appId: optional("APP_ID"),
   appSecret: required("APP_SECRET"),
   isProduction: process.env.NODE_ENV === "production",
   databaseUrl: required("DATABASE_URL"),
-  kimiAuthUrl: required("KIMI_AUTH_URL"),
-  kimiOpenUrl: required("KIMI_OPEN_URL"),
-  ownerUnionId: process.env.OWNER_UNION_ID ?? "",
-  googleClientId: process.env.GOOGLE_CLIENT_ID ?? "",
-  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+  kimiAuthUrl: optional("KIMI_AUTH_URL"),
+  kimiOpenUrl: optional("KIMI_OPEN_URL"),
+  ownerUnionId: optional("OWNER_UNION_ID"),
+  googleClientId: optional("GOOGLE_CLIENT_ID"),
+  googleClientSecret: optional("GOOGLE_CLIENT_SECRET"),
 };
