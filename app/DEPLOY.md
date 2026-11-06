@@ -1,5 +1,7 @@
 # نشر «وصولي» كموقع حقيقي
 
+> للنسخة **المجانية بالكامل** (Render + TiDB Cloud) اقرأ: [`DEPLOY-FREE.md`](./DEPLOY-FREE.md)
+
 التطبيق Node.js واحد يقدّم الواجهة والـ API معًا. البناء ينتج:
 
 - `dist/public` — ملفات الواجهة (HTML/CSS/JS/الصور)

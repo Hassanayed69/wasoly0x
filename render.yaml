@@ -1,0 +1,25 @@
+# Render Blueprint — نشر مجاني لموقع «وصولي»
+# التطبيق كامل (واجهة + API) داخل مجلد app/.
+# قاعدة البيانات MySQL مستضافة مجانًا على TiDB Cloud (خطواتها في app/DEPLOY-FREE.md).
+
+services:
+  - type: web
+    name: wasoly
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./app/Dockerfile
+    dockerContext: ./app
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
